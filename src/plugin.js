@@ -87,18 +87,19 @@ export default class WhisperWebpackPlugin {
 
   reportSilent(options: Object): void {
     let silent = true
-    if(this.options.devServer) {
-      if(!this.options.devServer.quite) {
-        if('none' !== this.options.devServer.stats) {
+    if(options.devServer) {
+      if(!options.devServer.quite) {
+        if('none' !== options.devServer.stats) {
           silent = false
         }
       }
     } else {
-      if('none' !== this.options.stats) {
+      if('none' !== options.stats) {
         silent = false
       }
     }
 
+    if(false === silent) {
     console.log(`webpack not works on silent mode, check your webpack.config.js:
 if use webpack-dev-server:
 
@@ -112,5 +113,6 @@ or use webpack on watch mode:
   stats: ${chalk.green(`'none'`)}
 }
 `)
+    }
   }
 }
