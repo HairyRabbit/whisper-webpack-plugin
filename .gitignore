@@ -59,5 +59,6 @@ typings/
 
 # projectile
 dist
+lib
 tmp
 .dll
