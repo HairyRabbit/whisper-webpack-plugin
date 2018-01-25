@@ -1,6 +1,6 @@
 {
-  "name": "whisper-webpack-plugin",
-  "version": "0.0.2",
+  "name": "@rabbitcc/whisper-webpack-plugin",
+  "version": "0.0.3",
   "description": "webpack little stats reporter plugin",
   "main": "lib/index.js",
   "scripts": {
@@ -20,6 +20,9 @@
   "keywords": [],
   "author": "Rabbit <yfhj1990@hotmail.com>",
   "license": "GPL-3.0",
+  "files": [
+    "lib"
+  ],
   "bugs": {
     "url": "https://github.com/HairyRabbit/whisper-webpack-plugin/issues"
   },
