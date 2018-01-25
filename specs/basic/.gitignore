@@ -63,3 +63,4 @@ tmp
 .dll
 lib
 main.js
+yarn.lock
