@@ -61,3 +61,5 @@ typings/
 dist
 tmp
 .dll
+lib
+main.js
