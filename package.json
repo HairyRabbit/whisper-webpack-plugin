@@ -9,7 +9,7 @@
     "build:prod": "cross-env NODE_ENV=production yarn rollup -c",
     "build:type": "flow gen-flow-files src/index.js > lib/index.js.flow",
     "test": "jest",
-    "test:spec": "yarn build && webpack --config specs/basic/webpack.config.js",
+    "test:spec": "yarn build && sh specs/test.sh",
     "test:co": "jest --coverage",
     "test:type": "flow"
   },
