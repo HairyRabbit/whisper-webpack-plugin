@@ -22,4 +22,17 @@ module.exports = [{
   plugins: [
     new WhisperWebpackPlugin()
   ]
+},{
+  entry: [
+    'webpack-dev-server/client',
+    'webpack/hot/only-dev-server'
+  ],
+  output: {
+    filename: 'main.js',
+    path: __dirname
+  },
+  stats: 'none',
+  plugins: [
+    new WhisperWebpackPlugin()
+  ]
 }]

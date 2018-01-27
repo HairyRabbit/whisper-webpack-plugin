@@ -19,11 +19,11 @@ export default {
     }),
     babel({ exclude: 'node_modules/**' }),
     json({ exclude: 'node_modules/**' }),
-    commonjs(),
-    'production' === process.env.NODE_ENV ? uglify({}) : []
+    commonjs()
   ),
   external: [].concat(
     'assert',
+    'util',
     'chalk',
     'webpack/lib/RequestShortener',
     'webpack/lib/formatLocation',

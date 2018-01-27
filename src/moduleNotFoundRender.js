@@ -30,15 +30,24 @@ export default function moduleNotFoundRender(error: ModuleNotFoundError, shorter
   const deps = error.dependencies
   assert(deps.length === 1)
   const location = deps[0].loc
-  const source = error.origin._source._value
+  let source
+  if(error.origin._source) {
+    source = error.origin._source._value
+  } else {
+    /**
+     * multi module
+     */
+    source = error.origin.dependencies.find(dep => dep === deps[0])._source || ''
+  }
+
   const message = error.message
   const name = error.name
   const fmt = formatLocation(location).split(':')
   const regexp = /Module not found: Error: Can't resolve '([^']+)' in '([^']+)'/
   const moduleName = message.match(regexp)[1]
-  const codeFrame = codeFrameColumns(source, location, {
+  const codeFrame = source ? codeFrameColumns(source, location, {
     highlightCode: colors
-  })
+  }) : ''
   const isMissModule = error.missing.find(s => /node_modules/.test(s))
   const isBuildinModule = ~buildins.indexOf(moduleName)
 
