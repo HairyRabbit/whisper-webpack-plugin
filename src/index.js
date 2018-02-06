@@ -8,8 +8,7 @@ export type Options = {
   warnings: boolean,
   colors: boolean,
   reasons: boolean,
-  checkSilent: boolean,
-  lang: 'zh'
+  checkSilent: boolean
 }
 
 export { default as default } from './plugin'

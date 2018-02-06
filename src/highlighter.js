@@ -21,6 +21,7 @@ function getTokenType(match) {
     }
     if (
       JSX_TAG.test(token.value) &&
+        // $FlowFixMe
       (text[offset - 1] === "<" || text.substr(offset - 2, 2) == "</")
     ) {
       return "jsx_tag"
@@ -41,7 +42,7 @@ function getTokenType(match) {
   return token.type
 }
 
-export default function highlightCodeFrame(code) {
+export default function highlightCodeFrame(code: string): string {
   const defs = {
     keyword: chalk.cyan,
     capitalized: chalk.yellow,
@@ -59,6 +60,7 @@ export default function highlightCodeFrame(code) {
   }
   return code.replace(jsTokens, function(...args) {
     const type = getTokenType(args)
+    // $FlowFixMe
     const colorize = defs[type]
     if (colorize) {
       return args[0]
