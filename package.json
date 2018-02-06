@@ -1,6 +1,6 @@
 {
   "name": "@rabbitcc/whisper-webpack-plugin",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "webpack little stats reporter plugin",
   "main": "lib/index.js",
   "scripts": {
