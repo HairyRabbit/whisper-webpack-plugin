@@ -72,7 +72,8 @@ export default class WhisperWebpackPlugin {
         assets,
         warnings,
         this.errors,
-        shorter
+        shorter,
+        stats
       )
 
       if(true === this.initBuild) {

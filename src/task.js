@@ -23,6 +23,7 @@ export default class Task {
   warnings: Array<string>;
   errors: Array<Error>;
   shorter: Function;
+  stats: any;
 
   constructor(id: number,
               type: TaskType,
@@ -32,7 +33,8 @@ export default class Task {
               assets: Array<Object>,
               warnings: Array<string>,
               errors: Array<Error>,
-              shorter: Function) {
+              shorter: Function,
+              stats: any) {
     this.id = id
     this.type = type
     this.prevCost = prevCost
@@ -42,6 +44,7 @@ export default class Task {
     this.warnings = warnings
     this.errors = errors
     this.shorter = shorter
+    this.stats = stats
   }
 
   toString(printWarning?: boolean = true): string {
