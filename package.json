@@ -1,17 +1,18 @@
 {
   "name": "@rabbitcc/whisper-webpack-plugin",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "webpack little stats reporter plugin",
   "main": "lib/index.js",
   "scripts": {
     "start": "yarn build",
     "build": "cross-env NODE_ENV=development yarn rollup -c",
     "build:prod": "cross-env NODE_ENV=production yarn rollup -c",
-    "build:type": "flow gen-flow-files src/index.js > lib/index.js.flow",
+    "build:type": "flow gen-flow-files src/index.js > lib/whisper-webpack-plugin.js.flow",
     "test": "jest",
     "test:spec": "yarn build && sh specs/test.sh",
     "test:co": "jest --coverage",
-    "test:type": "flow"
+    "test:type": "flow check",
+    "prepublish": "yarn test:co && yarn build:prod && yarn build:type"
   },
   "repository": {
     "type": "git",
@@ -56,6 +57,7 @@
     "chalk": "^2.3.0",
     "console.table": "^0.10.0",
     "esutils": "^2.0.2",
-    "js-tokens": "^4.0.0"
+    "js-tokens": "^4.0.0",
+    "postcss": "^6.0.17"
   }
 }
