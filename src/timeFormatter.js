@@ -39,7 +39,9 @@ export default function format(raw: string | number): string {
     str.push(String(s) + 's')
   }
 
-  str.push(String(ms) + 'ms')
+  if(((h || min || s) && ms) || !(h || min || s)) {
+    str.push(String(ms) + 'ms')
+  }
 
   return str.join(' ')
 }

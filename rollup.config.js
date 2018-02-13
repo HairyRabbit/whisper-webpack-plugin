@@ -3,7 +3,6 @@ import resolve from 'rollup-plugin-node-resolve'
 import json from 'rollup-plugin-json'
 import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
-import uglify from 'rollup-plugin-uglify-es'
 import pkg from './package.json'
 
 export default {
@@ -22,9 +21,9 @@ export default {
     commonjs()
   ),
   external: [].concat(
+    'path',
     'assert',
     'util',
-    'chalk',
     'webpack/lib/RequestShortener',
     'webpack/lib/formatLocation',
     Object.keys(Object.assign({}, pkg.dependencies, pkg.peerDependencies))

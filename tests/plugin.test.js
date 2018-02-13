@@ -18,7 +18,8 @@ test('default options', () => {
     warnings: true,
     colors: true,
     reasons: true,
-    checkSilent: true
+    checkSilent: true,
+    division: true
   })
 })
 
@@ -37,21 +38,6 @@ test('should check or not check silent mode', () => {
   plugin.reportSilent = log2
   plugin.apply(compiler)
   expect(log2).not.toBeCalled()
-})
-
-test('should log start compile', () => {
-  const Plugin = require('../src/plugin').default
-  const plugin = new Plugin()
-  const startLog = jest.fn()
-  const compiler = {
-    plugin: (str) => {
-      if('compile' === str) {
-        startLog()
-      }
-    }
-  }
-  plugin.apply(compiler)
-  expect(startLog).toBeCalled()
 })
 
 test('should reset errors', () => {

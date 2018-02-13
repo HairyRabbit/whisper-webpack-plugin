@@ -1,0 +1,11 @@
+div {
+  color: red;
+}
+
+.test {
+  composes: b from './b.css';
+}
+
+div2 {
+  color: green;
+}

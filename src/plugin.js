@@ -14,7 +14,8 @@ const defaultOptions: Options = {
   warnings: true,
   colors: true,
   reasons: true,
-  checkSilent: true
+  checkSilent: true,
+  division: true
 }
 
 export default class WhisperWebpackPlugin {
@@ -40,10 +41,6 @@ export default class WhisperWebpackPlugin {
     if(this.options.checkSilent) {
       this.reportSilent(compiler.options)
     }
-
-    compiler.plugin('compile', () => {
-      console.log('Webpack compiling...')
-    })
 
     compiler.plugin('after-emit', (compilation, callback) => {
       this.errors = compilation.errors
@@ -82,11 +79,20 @@ export default class WhisperWebpackPlugin {
 
       this.tasks.push(task)
 
+      /**
+       * print result
+       */
+      if(this.options.division) {
+        console.log(`${' '.repeat(24)} ${chalk.bgGreen.white(' WEBPACK REPORT ')}\n`)
+      }
       console.log(task.toString(this.options.warnings))
+      if(this.options.division) {
+        console.log(`${' '.repeat(24)}  ${chalk.bgGreen.white(' WEBPACK END ')}\n`)
+      }
     })
   }
 
-  reportSilent(options: Object): void {
+  reportSilent(options: Object = {}): void {
     let silent = true
     if(options.devServer) {
       if(!options.devServer.quite) {
@@ -102,17 +108,8 @@ export default class WhisperWebpackPlugin {
 
     if(false === silent) {
     console.log(`webpack not works on silent mode, check your webpack.config.js:
-if use webpack-dev-server:
-
-{
-  quite: ${chalk.blue('true')}
-}
-
-or use webpack on watch mode:
-
-{
-  stats: ${chalk.green(`'none'`)}
-}
+if use webpack-dev-server, should be set { quite: ${chalk.blue('true')} }
+or use webpack on watch mode need to set { stats: ${chalk.green(`'none'`)} }
 `)
     }
   }

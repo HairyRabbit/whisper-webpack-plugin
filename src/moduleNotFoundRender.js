@@ -1,6 +1,10 @@
 /**
  * ModuleNotFound render
  *
+ * 1. normal module not found
+ * 2. mulit module for array entry
+ * 3. css module composes
+ *
  * @flow
  */
 
@@ -11,6 +15,8 @@ import { codeFrameColumns } from '@babel/code-frame'
 import formatLocation from "webpack/lib/formatLocation"
 import type { ModuleNotFoundError } from 'webpack/lib/ModuleNotFoundError'
 import highlight from './highlighter'
+import resolveCssLocation from './cssSourceLocationResolver'
+import formtCssModuleFileName from './cssModuleFileName'
 import { zh as lang } from './langs'
 
 const buildins: Array<string> = [
@@ -28,11 +34,26 @@ const buildins: Array<string> = [
 export default function moduleNotFoundRender(error: ModuleNotFoundError, shorter: Function, colors?: boolean = true): string {
   const file = error.origin.readableIdentifier(shorter)
   const deps = error.dependencies
-  assert(deps.length === 1)
+  let isCssModule, isCssSourceMapEnabled
+  /**
+   * css modules composes not found error
+   */
+  if(deps.every(dep => /css-loader\/index\.js\?/.test(dep.request))) {
+    isCssModule = true
+  } else {
+    assert(deps.length === 1)
+  }
   const location = deps[0].loc
   let source
   if(error.origin._source) {
     source = error.origin._source._value
+    if(isCssModule) {
+      const matched = source.match(/"sourcesContent":\["([^"]+)"\]/)
+      if(matched) {
+        source = matched[1].replace(/\\n/g, '\n')
+        isCssSourceMapEnabled = true
+      }
+    }
   } else {
     /**
      * multi module
@@ -45,9 +66,13 @@ export default function moduleNotFoundRender(error: ModuleNotFoundError, shorter
   const fmt = formatLocation(location).split(':')
   const regexp = /Module not found: Error: Can't resolve '([^']+)' in '([^']+)'/
   const moduleName = message.match(regexp)[1]
-  const codeFrame = source ? codeFrameColumns(source, location, {
+  const sourceLocation = source && isCssModule && isCssSourceMapEnabled
+        ? resolveCssLocation(source, moduleName)
+        : location
+  const codeFrameOptions = {
     highlightCode: colors
-  }) : ''
+  }
+  const codeFrame = source ? codeFrameColumns(source, sourceLocation, codeFrameOptions) : ''
   const isMissModule = error.missing.find(s => /node_modules/.test(s))
   const isBuildinModule = ~buildins.indexOf(moduleName)
 
@@ -93,7 +118,7 @@ export default function moduleNotFoundRender(error: ModuleNotFoundError, shorter
   /**
    * output string
    */
-  const filePath = `@ ${file}:${fmt[0]},${fmt[1].split('-')[1]}`
+  const filePath = `@ ${!isCssModule ? file : formtCssModuleFileName(file)}:${fmt[0]},${fmt[1].split('-')[1]}`
   let output = [message, codeFrame, filePath].join('\n\n')
   const reasonsLen = reasons.length
   if(reasonsLen) {
