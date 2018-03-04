@@ -8,6 +8,7 @@ import chalk from 'chalk'
 import { getTable } from 'console.table'
 import formatBytes from './byteFormatter'
 import formatTime from './timeFormatter'
+import assetsFilter from './assetsFilter'
 import renderModuleNotFoundError from './moduleNotFoundRender'
 
 type TaskType = 'init' | 'inc'
@@ -98,5 +99,34 @@ ${action}:\n
     }).join('\n')
 
     return str
+  }
+
+  toStringLite() {
+    const isDone = 'done' === this.result
+    const colorful = isDone ? chalk.bgGreen.white : chalk.bgRed.white
+    const cost = this.cost
+    const warns = this.warnings.length
+    const errs = this.errors.length
+    const header = colorful(` ${formatTime(cost)} ${warns} Wrn ${errs} Err `)
+
+
+    const success = this.assets.filter(assetsFilter).map(asset => {
+      const name = asset.name
+      const size = formatBytes(asset.size)
+      return `   - ${name} ~ ${size}`
+    }).join('\n')
+
+    const failed = this.errors.map((err, idx) => {
+      if('ModuleNotFoundError' === err.name) {
+        err = renderModuleNotFoundError(err, this.shorter)
+      } else {
+        err = err.toString()
+      }
+      return String(idx + 1) + '. ' + err + '\n'
+    }).join('\n')
+
+    const body = !errs ? success : failed
+
+    return '-'.repeat(30) + header + '\n\n' + body
   }
 }

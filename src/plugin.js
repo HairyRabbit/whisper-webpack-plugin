@@ -85,7 +85,9 @@ export default class WhisperWebpackPlugin {
       if(this.options.division) {
         console.log(`${' '.repeat(24)} ${chalk.bgGreen.white(' WEBPACK REPORT ')}\n`)
       }
-      console.log(task.toString(this.options.warnings))
+
+      console.log(task.toStringLite(this.options.warnings))
+
       if(this.options.division) {
         console.log(`${' '.repeat(24)}  ${chalk.bgGreen.white(' WEBPACK END ')}\n`)
       }
